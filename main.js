@@ -1,18 +1,38 @@
 const elementsButton = document.querySelectorAll('button');
 const calculatorResult = document.querySelector('.calculator_result');
+const operationKeys = ['+', '-', '/', '%', 'x', '*']
+let showValueOnScreen = '';
 let numberResult = '';
+let isPressedKeyEqual = false
 
 function addResultCalc() {
-  calculatorResult.innerHTML = eval(numberResult);
-  numberResult = '';
+  isPressedKeyEqual = true
+  let result = eval(numberResult)
+  calculatorResult.innerHTML = result;
+  numberResult = result;
 }
 
 function cleanNumbers() {
+  isPressedKeyEqual = false
   numberResult = '';
   calculatorResult.innerHTML = '0';
 }
 
+function invertSignal() {
+    numberResult = numberResult * -1
+    calculatorResult.innerHTML = numberResult
+}
+
+function percentage() {
+  numberResult = numberResult / 100
+  calculatorResult.innerHTML = numberResult
+}
+
 function insertResult(key) {
+  if(operationKeys.includes(key)) {
+    isPressedKeyEqual = false
+  }
+  
   if (key === 'AC') {
     cleanNumbers();
     return;
@@ -27,8 +47,28 @@ function insertResult(key) {
     key = '*';
   }
 
+  if (key === '+/-') {
+    invertSignal();
+    return;
+  }
+
+  if (key === '%') {
+    percentage();
+    return;
+  }
+
+  if(isPressedKeyEqual) {
+    cleanNumbers();
+  }
+
+  if (!operationKeys.includes(key)) {
+    showValueOnScreen += key;
+  }
+
   numberResult = numberResult + String(key);
-  calculatorResult.innerHTML = numberResult;
+  calculatorResult.innerHTML = showValueOnScreen;
+
+  console.log(showValueOnScreen)
 }
 
 elementsButton.forEach((elementButton) => {

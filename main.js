@@ -1,19 +1,17 @@
 const elementsButton = document.querySelectorAll('button');
 const calculatorResult = document.querySelector('.calculator_result');
 const operationKeys = ['+', '-', '/', '%', 'x', '*']
+const numbersKeys = ['1','2','3','4','5','6','7','8','9','0']
 let showValueOnScreen = '';
 let numberResult = '';
 let isPressedKeyEqual = false
+let isPressedOperationKey = false
 
 function addResultCalc() {
   isPressedKeyEqual = true
   let result = eval(numberResult)
   calculatorResult.innerHTML = result;
   numberResult = result;
-}
-
-function resetLaterOfSignal() {
-  showValueOnScreen = ''
 }
 
 function cleanNumbers() {
@@ -23,22 +21,32 @@ function cleanNumbers() {
   calculatorResult.innerHTML = '0';
 }
 
+function resetNumbersSignal() {
+  showValueOnScreen = ''
+}
+
 function invertSignal() {
-    numberResult = numberResult * -1
+    numberResult = eval(numberResult) * -1
     calculatorResult.innerHTML = numberResult
 }
 
 function percentage() {
-  numberResult = numberResult / 100
+  numberResult = eval(numberResult) / 100
   calculatorResult.innerHTML = numberResult
 }
 
 function insertResult(key) {
+
   if(operationKeys.includes(key)) {
-    isPressedKeyEqual = false
-    resetLaterOfSignal();
+    isPressedOperationKey = true
+    isPressedKeyEqual = false 
   }
-  
+
+  if(numbersKeys.includes(key) && isPressedOperationKey) {
+    resetNumbersSignal()
+    isPressedOperationKey = false
+  }
+
   if (key === 'AC') {
     cleanNumbers();
     return;
@@ -73,8 +81,6 @@ function insertResult(key) {
 
   numberResult = numberResult + String(key);
   calculatorResult.innerHTML = showValueOnScreen;
-
-  console.log(showValueOnScreen)
 }
 
 elementsButton.forEach((elementButton) => {
@@ -82,3 +88,5 @@ elementsButton.forEach((elementButton) => {
     insertResult(elementButton.innerHTML);
   });
 });
+
+// 50 + (-51) = -1

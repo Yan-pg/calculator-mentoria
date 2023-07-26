@@ -12,9 +12,14 @@ function addResultCalc() {
   numberResult = result;
 }
 
+function resetLaterOfSignal() {
+  showValueOnScreen = ''
+}
+
 function cleanNumbers() {
   isPressedKeyEqual = false
   numberResult = '';
+  showValueOnScreen = ''
   calculatorResult.innerHTML = '0';
 }
 
@@ -31,6 +36,7 @@ function percentage() {
 function insertResult(key) {
   if(operationKeys.includes(key)) {
     isPressedKeyEqual = false
+    resetLaterOfSignal();
   }
   
   if (key === 'AC') {
